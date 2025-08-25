@@ -5,3 +5,17 @@ variable "common" {
     region = string
   })
 }
+
+variable "network" {
+  type = object({
+    cidr = string
+    subnet_groups = map(object({
+      visibility = string
+      tier       = string
+      subnets = list(object({
+        az   = string
+        cidr = string
+      }))
+    }))
+  })
+}

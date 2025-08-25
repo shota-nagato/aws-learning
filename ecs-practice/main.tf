@@ -16,5 +16,6 @@ provider "aws" {
 module "network" {
   source = "../modules/network"
 
-  common = local.common
+  common  = local.common
+  network = local.network
 }
