@@ -6,33 +6,23 @@ locals {
   }
 
   network = {
-    cidr = "172.16.0.0/16"
+    cidr = "10.0.0.0/20"
     subnet_groups = {
-      public_ingress = {
-        visibility = "public"
-        tier       = "ingress"
+      app1 = {
+        visibility = "private"
         subnets = [
           {
             az   = "a"
-            cidr = "172.16.1.0/24"
-          },
-          {
-            az   = "c"
-            cidr = "172.16.2.0/24"
+            cidr = "10.0.0.0/24"
           }
         ]
-      }
-      private_container = {
-        visibility = "private"
-        tier       = "container"
+      },
+      app2 = {
+        visibility = "public"
         subnets = [
           {
             az   = "a"
-            cidr = "172.16.3.0/24"
-          },
-          {
-            az   = "c"
-            cidr = "172.16.4.0/24"
+            cidr = "10.0.1.0/24"
           }
         ]
       }

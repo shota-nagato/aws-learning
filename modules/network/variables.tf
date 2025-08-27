@@ -11,7 +11,6 @@ variable "network" {
     cidr = string
     subnet_groups = map(object({
       visibility = string
-      tier       = string
       subnets = list(object({
         az   = string
         cidr = string
