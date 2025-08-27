@@ -12,10 +12,10 @@ locals {
   subnets = merge([
     for group_name, group in var.network.subnet_groups : {
       for subnet in group.subnets : "${group_name}-${subnet.az}" => {
-        type = group.visibility
-        tier = group.tier
-        az   = subnet.az
-        cidr = subnet.cidr
+        group_name = group_name
+        visibility = group.visibility
+        az         = subnet.az
+        cidr       = subnet.cidr
       }
     }
   ]...)
@@ -29,6 +29,6 @@ resource "aws_subnet" "subnets" {
   cidr_block        = each.value.cidr
 
   tags = {
-    Name = "${var.common.prefix}-${var.common.env}-${each.value.type}-${each.value.tier}-subnet-1${each.value.az}"
+    Name = "${var.common.prefix}-${var.common.env}-${each.value.visibility}-${each.value.group_name}-subnet-1${each.value.az}"
   }
 }
