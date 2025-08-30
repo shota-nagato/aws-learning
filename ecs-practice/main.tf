@@ -18,3 +18,9 @@ module "network" {
 
   common = local.common
 }
+
+module "ecs" {
+  source = "./modules/ecs"
+
+  common = local.common
+}
