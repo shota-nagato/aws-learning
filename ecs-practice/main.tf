@@ -24,3 +24,10 @@ module "ecs" {
 
   common = local.common
 }
+
+module "alb_ingress" {
+  source = "./modules/alb_ingress"
+
+  common  = local.common
+  network = module.network
+}
