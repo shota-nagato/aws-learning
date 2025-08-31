@@ -90,3 +90,33 @@ resource "aws_vpc_security_group_egress_rule" "frontend_all" {
   ip_protocol       = "-1"
   cidr_ipv4         = "0.0.0.0/0"
 }
+
+resource "aws_security_group" "alb" {
+  name   = "${var.common.prefix}-alb-sg"
+  vpc_id = aws_vpc.main.id
+  tags = {
+    Name = "${var.common.prefix}-alb-sg"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "alb_http" {
+  security_group_id = aws_security_group.alb.id
+  ip_protocol       = "tcp"
+  from_port         = 80
+  to_port           = 80
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "alb_custom" {
+  security_group_id = aws_security_group.alb.id
+  ip_protocol       = "tcp"
+  from_port         = 9000
+  to_port           = 9000
+  cidr_ipv4         = "150.31.69.245/32"
+}
+
+resource "aws_vpc_security_group_egress_rule" "alb_all" {
+  security_group_id = aws_security_group.alb.id
+  ip_protocol       = "-1"
+  cidr_ipv4         = "0.0.0.0/0"
+}
