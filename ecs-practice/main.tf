@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "6.13.0"
     }
   }
 }
@@ -22,7 +22,9 @@ module "network" {
 module "ecs" {
   source = "./modules/ecs"
 
-  common = local.common
+  common      = local.common
+  network     = module.network
+  alb_ingress = module.alb_ingress
 }
 
 module "alb_ingress" {

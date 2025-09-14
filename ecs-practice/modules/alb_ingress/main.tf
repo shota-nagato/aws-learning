@@ -51,6 +51,21 @@ resource "aws_lb_listener" "blue" {
   port              = 80
 
   default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Default rule - no match"
+      status_code  = "404"
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "blue" {
+  listener_arn = aws_lb_listener.blue.arn
+  priority     = 100
+
+  action {
     type = "forward"
 
     forward {
@@ -64,6 +79,12 @@ resource "aws_lb_listener" "blue" {
       }
     }
   }
+
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
+  }
 }
 
 resource "aws_lb_listener" "green" {
@@ -72,7 +93,28 @@ resource "aws_lb_listener" "green" {
   port              = 9000
 
   default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Default rule - no match"
+      status_code  = "404"
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "green" {
+  listener_arn = aws_lb_listener.green.arn
+  priority     = 100
+
+  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.green.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
   }
 }
