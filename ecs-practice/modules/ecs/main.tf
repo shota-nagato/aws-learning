@@ -41,6 +41,46 @@ resource "aws_ecs_task_definition" "service" {
   }
 }
 
+resource "aws_ecs_service" "frontend" {
+  name                               = "${var.common.prefix}-frontend"
+  cluster                            = aws_ecs_cluster.main.arn
+  task_definition                    = aws_ecs_task_definition.service.arn
+  launch_type                        = "FARGATE"
+  desired_count                      = 1
+  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 100
+
+  deployment_controller {
+    type = "ECS"
+  }
+
+  deployment_configuration {
+    strategy             = "BLUE_GREEN"
+    bake_time_in_minutes = 2
+  }
+
+  network_configuration {
+    subnets = var.network.public_subnet_ids
+    security_groups = [
+      var.network.security_group_frontend_id
+    ]
+    assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = var.alb_ingress.alb_target_group_blue_arn
+    container_name   = "frontend"
+    container_port   = 80
+
+    advanced_configuration {
+      alternate_target_group_arn = var.alb_ingress.alb_target_group_green_arn
+      production_listener_rule   = var.alb_ingress.alb_listener_production_rule_arn
+      test_listener_rule         = var.alb_ingress.alb_listener_test_rule_arn
+      role_arn                   = aws_iam_role.ecs_infrastructure_role_for_load_balancers.arn
+    }
+  }
+}
+
 resource "aws_iam_role" "task_execution_role" {
   name               = "${var.common.prefix}-task-execution-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role.json
