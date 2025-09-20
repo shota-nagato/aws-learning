@@ -28,6 +28,12 @@ module "ecs" {
   lambda_function_arn = module.lambda.lambda_function_arn
 }
 
+module "ecr" {
+  source = "./modules/ecr"
+
+  common = local.common
+}
+
 module "alb_ingress" {
   source = "./modules/alb_ingress"
 
