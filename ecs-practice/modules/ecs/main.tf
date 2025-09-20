@@ -57,6 +57,11 @@ resource "aws_ecs_service" "frontend" {
   deployment_configuration {
     strategy             = "BLUE_GREEN"
     bake_time_in_minutes = 2
+    lifecycle_hook {
+      hook_target_arn  = var.lambda_function_arn
+      role_arn         = aws_iam_role.lifecycle_hooks_role.arn
+      lifecycle_stages = ["POST_TEST_TRAFFIC_SHIFT"]
+    }
   }
 
   network_configuration {
@@ -131,4 +136,39 @@ resource "aws_iam_role" "ecs_infrastructure_role_for_load_balancers" {
 resource "aws_iam_role_policy_attachment" "ecs_infrastructure_role_for_load_balancers_attachment" {
   role       = aws_iam_role.ecs_infrastructure_role_for_load_balancers.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonECSInfrastructureRolePolicyForLoadBalancers"
+}
+
+resource "aws_iam_role" "lifecycle_hooks_role" {
+  name = "${var.common.prefix}-ecs-lifecycle-hooks-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "lifecycle_hooks_policy" {
+  name = "${var.common.prefix}-ecs-lifecycle-hooks-policy"
+  role = aws_iam_role.lifecycle_hooks_role.id
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "lambda:InvokeFunction"
+        ],
+        "Resource" : var.lambda_function_arn
+      }
+    ]
+  })
 }

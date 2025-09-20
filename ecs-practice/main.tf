@@ -22,9 +22,10 @@ module "network" {
 module "ecs" {
   source = "./modules/ecs"
 
-  common      = local.common
-  network     = module.network
-  alb_ingress = module.alb_ingress
+  common              = local.common
+  network             = module.network
+  alb_ingress         = module.alb_ingress
+  lambda_function_arn = module.lambda.lambda_function_arn
 }
 
 module "alb_ingress" {
@@ -33,3 +34,10 @@ module "alb_ingress" {
   common  = local.common
   network = module.network
 }
+
+module "lambda" {
+  source = "./modules/lambda"
+
+  common = local.common
+}
+
