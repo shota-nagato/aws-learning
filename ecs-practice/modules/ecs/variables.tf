@@ -22,3 +22,7 @@ variable "alb_ingress" {
     alb_listener_test_rule_arn       = string
   })
 }
+
+variable "lambda_function_arn" {
+  type = string
+}
