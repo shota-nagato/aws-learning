@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_ecs_cluster" "main" {
   name = "${var.common.prefix}-cluster"
 }
@@ -14,7 +16,7 @@ resource "aws_ecs_task_definition" "service" {
   container_definitions = jsonencode([
     {
       name      = "frontend"
-      image     = "public.ecr.aws/nginx/nginx:1.28-alpine3.21-slim"
+      image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/ecs-practice-frontend:latest"
       cpu       = 256
       memory    = 512
       essential = true

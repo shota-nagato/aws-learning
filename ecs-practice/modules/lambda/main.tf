@@ -11,6 +11,8 @@ resource "aws_lambda_function" "lifecycle_hooks" {
   handler       = "function.lambda_handler"
   runtime       = "python3.13"
   timeout       = 60
+
+  source_code_hash = data.archive_file.lambda_function.output_base64sha256
 }
 
 resource "aws_iam_role" "lambda_exec_role" {

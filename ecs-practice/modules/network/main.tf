@@ -112,7 +112,7 @@ resource "aws_vpc_security_group_ingress_rule" "alb_custom" {
   ip_protocol       = "tcp"
   from_port         = 9000
   to_port           = 9000
-  cidr_ipv4         = "150.31.69.245/32"
+  cidr_ipv4         = "14.12.115.1/32"
 }
 
 resource "aws_vpc_security_group_egress_rule" "alb_all" {
