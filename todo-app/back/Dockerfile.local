@@ -1,0 +1,22 @@
+FROM node:22-alpine
+
+WORKDIR /app
+
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+RUN npm run generate
+
+RUN chown -R appuser:appgroup /app
+RUN chmod +x /app/scripts/entrypoint.sh
+
+ENV NODE_ENV=development
+
+USER appuser
+
+ENTRYPOINT ["/app/scripts/entrypoint.sh"]
+CMD ["npm", "run", "dev"]
