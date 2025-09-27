@@ -12,8 +12,8 @@ provider "aws" {
   profile = "default"
   default_tags {
     tags = {
-      Project     = var.project
-      Environment = var.environment
+      Project     = var.project_settings.project
+      Environment = var.project_settings.environment
       ManagedBy   = "terraform"
     }
   }
