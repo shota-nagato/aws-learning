@@ -27,3 +27,19 @@ variable "network_settings" {
     rds_private_subnet_cidr_blocks = list(string)
   })
 }
+
+# ============================================
+# デバッグ設定
+# ============================================
+variable "enable_debug_resources" {
+  description = "デバッグ用リソースを作成するかどうか"
+  type        = bool
+  default     = false
+}
+
+variable "debug_settings" {
+  description = "デバッグ用のリソース設定"
+  type = object({
+    debug_subnet_cidr_block = string
+  })
+}
