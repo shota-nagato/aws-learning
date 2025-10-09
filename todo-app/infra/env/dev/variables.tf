@@ -43,3 +43,13 @@ variable "debug_settings" {
     debug_subnet_cidr_block = string
   })
 }
+
+# ============================================
+# ECR設定
+# ============================================
+variable "ecr_settings" {
+  description = "ECRの設定"
+  type = object({
+    retention_days = number
+  })
+}

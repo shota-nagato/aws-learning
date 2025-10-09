@@ -1,5 +1,5 @@
 locals {
-  name_prefix = "${var.project_settings.project}-${var.project_settings.environment}-${var.project_settings.developer}"
+  name_prefix = var.project_settings.developer != null && var.project_settings.developer != "" ? "${var.project_settings.project}-${var.project_settings.environment}-${var.project_settings.developer}" : "${var.project_settings.project}-${var.project_settings.environment}"
 }
 
 resource "aws_cognito_user_pool" "this" {
