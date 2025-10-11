@@ -58,3 +58,21 @@ module "rds" {
     instance_type  = var.rds_settings.instance_type
   }
 }
+
+# ============================================
+# ACM with validationモジュール
+# ============================================
+module "acm_with_validation" {
+  source = "../../modules/acm_with_validation"
+
+  project_settings = var.project_settings
+  acm_settings = {
+    zone_id     = var.domain_settings.zone_id
+    domain_name = local.domain_name
+  }
+
+  providers = {
+    aws      = aws
+    aws.use1 = aws.use1
+  }
+}
