@@ -53,3 +53,20 @@ variable "ecr_settings" {
     retention_days = number
   })
 }
+
+# 本番環境フラグ
+variable "is_production" {
+  description = "本番環境かどうか"
+  type        = bool
+  default     = false
+}
+
+variable "rds_settings" {
+  description = "RDSの設定"
+  type = object({
+    instance_type = string
+    db_name       = string
+    db_user       = string
+    db_password   = string
+  })
+}

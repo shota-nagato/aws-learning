@@ -224,3 +224,17 @@ resource "aws_vpc_endpoint" "ec2_messages" {
     Name = "${local.prefix}-ec2-messages-vpc-endpoint"
   })
 }
+
+# VPC Endpoint for S3 (Gateway type)
+resource "aws_vpc_endpoint" "s3" {
+  count = var.enable_debug_resources ? 1 : 0
+
+  vpc_id            = var.debug_settings.vpc_id
+  service_name      = "com.amazonaws.ap-northeast-1.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = var.debug_settings.private_route_table_ids
+
+  tags = merge(local.common_tags, {
+    Name = "${local.prefix}-s3-vpc-endpoint"
+  })
+}

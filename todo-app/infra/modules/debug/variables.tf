@@ -21,5 +21,6 @@ variable "debug_settings" {
     availability_zone       = string
     rds_security_group_id   = string
     ecs_private_subnet_id   = string
+    private_route_table_ids = list(string)
   })
 }

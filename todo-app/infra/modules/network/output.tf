@@ -20,3 +20,7 @@ output "security_group_ids" {
     rds = aws_security_group.rds.id
   }
 }
+
+output "private_route_table_ids" {
+  value = aws_route_table.private[*].id
+}
