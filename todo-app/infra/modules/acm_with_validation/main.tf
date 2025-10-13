@@ -47,8 +47,8 @@ resource "aws_route53_record" "api_cert_validation" {
     for dvo in aws_acm_certificate.api.domain_validation_options :
     dvo.domain_name => {
       name  = dvo.resource_record_name
-      type  = dvo.recource_record_type
-      vlaue = dvo.resource_record_value
+      type  = dvo.resource_record_type
+      value = dvo.resource_record_value
     }
   }
 
@@ -88,7 +88,7 @@ resource "aws_route53_record" "react_cert_validation" {
   }
 }
 
-resource "aws_acm_certificate_validation" "api" {
+resource "aws_acm_certificate_validation" "api_validation" {
   certificate_arn         = aws_acm_certificate.api.arn
   validation_record_fqdns = [for r in aws_route53_record.api_cert_validation : r.fqdn]
 }
