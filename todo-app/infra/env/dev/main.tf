@@ -76,3 +76,30 @@ module "acm_with_validation" {
     aws.use1 = aws.use1
   }
 }
+
+# ============================================
+# S3 ALB log モジュール
+# ============================================
+module "s3_alb_log" {
+  source           = "../../modules/s3_alb_log"
+  project_settings = var.project_settings
+}
+
+# ============================================
+# ALB
+# ============================================
+module "alb" {
+  source = "../../modules/alb"
+
+  project_settings = var.project_settings
+  alb_settings = {
+    vpc_id          = module.network.vpc.id
+    subnet_ids      = module.network.subnet_ids.alb
+    sg_id           = module.network.security_group_ids.alb
+    certificate_arn = module.acm_with_validation.api_cert_arn
+    bucket_name     = module.s3_alb_log.bucket_name
+
+    zone_id         = var.domain_settings.zone_id
+    alb_domain_name = local.api_domain_name
+  }
+}
