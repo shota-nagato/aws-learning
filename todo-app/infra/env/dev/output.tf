@@ -11,3 +11,11 @@ output "rds_endpoint" {
   value       = module.rds.db_instance_address
   description = "RDS接続のエンドポイント"
 }
+
+output "ECS_CLUSTER" {
+  value = module.ecs.cluster_name
+}
+
+output "ECS_SERVICE" {
+  value = module.ecs.service_name
+}
