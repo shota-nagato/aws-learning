@@ -103,3 +103,23 @@ module "alb" {
     alb_domain_name = local.api_domain_name
   }
 }
+
+# ============================================
+# SSMモジュール
+# ============================================
+module "ssm" {
+  source = "../../modules/ssm"
+  prefix = "/${var.project_settings.project}/${var.project_settings.environment}"
+  parameters = {
+    "api_url" : "https://${local.api_domain_name}"
+    "app_url" : "https://${local.domain_name}"
+    "cognito/user_pool_id" = module.cognito.user_pool_id
+    "cognito/client_id"    = module.cognito.client_id
+    "db/host"              = module.rds.db_instance_address
+    "db/user"              = "dummy" # user名はDBセットアップ後に手動で上書き
+    "db/name"              = var.rds_settings.db_name
+  }
+  secure_params = {
+    "db/password" = "dummy" # パスワードはDBセットアップ後に手動で上書き
+  }
+}
