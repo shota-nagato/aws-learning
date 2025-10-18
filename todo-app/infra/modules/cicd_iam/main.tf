@@ -42,13 +42,13 @@ resource "aws_iam_role_policy" "github_actions_policy" {
   role = aws_iam_role.github_actions.id
 
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
-        Effect = "Allow"
+        Effect = "Allow",
         Action = [
           "s3:PutObject",
-          "s3:putObjectAcl",
+          "s3:PutObjectAcl",
           "s3:DeleteObject",
           "s3:ListBucket"
         ],
@@ -58,7 +58,7 @@ resource "aws_iam_role_policy" "github_actions_policy" {
         ]
       },
       {
-        Effect = "Allow"
+        Effect = "Allow",
         Action = [
           "cloudfront:CreateInvalidation"
         ],

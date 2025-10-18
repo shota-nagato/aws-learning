@@ -3,7 +3,7 @@ output "family" {
 }
 
 output "service_arn" {
-  value = aws_ecs_service.api.name
+  value = aws_ecs_service.api.id
 }
 
 output "cluster_arn" {

@@ -138,6 +138,15 @@ resource "aws_route_table_association" "alb_public" {
   route_table_id = aws_route_table.public.id
 }
 
+# Route Table Association
+# Nat Public Subnet - Public Route Table
+# --------------------------------------------
+resource "aws_route_table_association" "nat_public" {
+  count          = length(aws_subnet.nat_public)
+  subnet_id      = aws_subnet.nat_public[count.index].id
+  route_table_id = aws_route_table.public.id
+}
+
 # Private Route Table
 # AZごとにNATを配置するため、Route TableもAZごとに作成する
 # --------------------------------------------
