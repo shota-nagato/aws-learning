@@ -12,9 +12,15 @@ provider "aws" {
   profile = "default"
   default_tags {
     tags = {
-      Project     = var.project
-      Environment = var.environment
+      Project     = "taskfolio"
+      Environment = "dev"
       ManagedBy   = "terraform"
     }
   }
+}
+
+provider "aws" {
+  alias   = "use1"
+  region  = "us-east-1"
+  profile = "default"
 }
