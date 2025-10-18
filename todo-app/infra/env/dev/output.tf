@@ -19,3 +19,7 @@ output "ECS_CLUSTER" {
 output "ECS_SERVICE" {
   value = module.ecs.service_name
 }
+
+output "GITHUB_ROLE" {
+  value = module.cicd_iam.github_actions_role_arn
+}

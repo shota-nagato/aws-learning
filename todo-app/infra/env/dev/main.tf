@@ -177,3 +177,31 @@ module "autoscaling" {
     service_name = module.ecs.service_name
   }
 }
+
+module "react_hosting" {
+  source = "../../modules/react_hosting"
+
+  project_settings = var.project_settings
+  react_settings = {
+    domain_name = local.domain_name
+    cert_arn    = module.acm_with_validation.global_cert_arn
+    zone_id     = var.domain_settings.zone_id
+  }
+}
+
+module "cicd_iam" {
+  source = "../../modules/cicd_iam"
+
+  project_settings = var.project_settings
+  cicd_settings = {
+    github_repository         = var.cicd_settings.github_repository
+    branch_name               = var.cicd_settings.branch_name
+    ssm_prefix                = "/${var.project_settings.project}/${var.project_settings.environment}"
+    react_bucket_arn          = module.react_hosting.react_bucket_arn
+    ecr_repo_arn              = module.ecr.repository_arn
+    ecs_cluster_arn           = module.ecs.cluster_arn
+    ecs_service_arn           = module.ecs.service_arn
+    ecs_family                = module.ecs.family
+    ecs_task_execute_role_arn = module.ecs_iam.ecs_execution_role_arn
+  }
+}
