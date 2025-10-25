@@ -5,16 +5,10 @@ variable "project_settings" {
   })
 }
 
-variable "domain_settings" {
-  type = object({
-    base_domain   = string
-    domain_prefix = optional(string)
-  })
-}
-
 variable "cicd_settings" {
   type = object({
     github_repository = string
     branch_name       = string
+    bucket_arn        = string
   })
 }
