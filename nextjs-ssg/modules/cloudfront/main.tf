@@ -24,6 +24,13 @@ resource "aws_cloudfront_distribution" "next" {
     target_origin_id = "s3-${var.bucket_origin_id}"
 
     viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "none"
+      }
+    }
   }
 
   viewer_certificate {

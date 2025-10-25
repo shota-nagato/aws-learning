@@ -46,3 +46,14 @@ module "cloudfront" {
   bucket_origin_id            = module.s3.bucket_origin_id
   acm_certificate_arn         = module.acm.acm_certificate_arn
 }
+
+module "cicd_iam" {
+  source = "../../modules/cicd_iam"
+
+  project_settings = var.project_settings
+  cicd_settings = {
+    github_repository = var.cicd_settings.github_repository
+    branch_name       = var.cicd_settings.branch_name
+    bucket_arn        = module.s3.bucket_arn
+  }
+}
