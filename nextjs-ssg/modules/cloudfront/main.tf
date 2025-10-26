@@ -45,6 +45,11 @@ resource "aws_cloudfront_distribution" "next" {
     }
   }
 
+  logging_config {
+    bucket = var.log_bucket_domain_name
+    prefix = "cloudfront/"
+  }
+
   tags = {
     Name = "${var.project_settings.project}-${var.project_settings.environment}-cloudfront-distribution"
   }

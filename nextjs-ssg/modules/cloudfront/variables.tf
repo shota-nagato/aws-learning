@@ -23,3 +23,7 @@ variable "bucket_origin_id" {
 variable "acm_certificate_arn" {
   type = string
 }
+
+variable "log_bucket_domain_name" {
+  type = string
+}
