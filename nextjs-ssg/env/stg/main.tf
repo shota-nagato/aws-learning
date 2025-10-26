@@ -34,6 +34,12 @@ module "s3" {
   cloudfront_distribution_arn = module.cloudfront.cloudfront_distribution_arn
 }
 
+module "s3_logs" {
+  source = "../../modules/s3_logs"
+
+  project_settings = var.project_settings
+}
+
 module "cloudfront" {
   source = "../../modules/cloudfront"
 
@@ -45,6 +51,7 @@ module "cloudfront" {
   bucket_regional_domain_name = module.s3.bucket_regional_domain_name
   bucket_origin_id            = module.s3.bucket_origin_id
   acm_certificate_arn         = module.acm.acm_certificate_arn
+  log_bucket_domain_name      = module.s3_logs.log_bucket_domain_name
 }
 
 module "cicd_iam" {
